@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "name": "Ayesha",
+    "email": "ayesha@productsup.com",
+    "role": "Developer",
+    "team": "Tech"
+  },
+  {
+    "id": "2",
+    "name": "Nayan",
+    "email": "nayan@productsup.com",
+    "role": "Developer",
+    "team": "Tech"
+  },
+  {
+    "id": "3",
+    "name": "Partha",
+    "email": "partha@productsup.com",
+    "role": "Developer",
+    "team": "Tech"
+  }
+]
