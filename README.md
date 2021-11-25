@@ -64,6 +64,6 @@ php bin/console app:export-data --source=ftp coffee_feed.xml
 
 ### Logs
 
-* Logs for the application are stored in the 'environment'.log file. **Information log** and **Error log** will be logged in 'environment'.log and 'environment'_errors.log files respectively which resides in the path `var/log/`
+* Logs for the application are stored in the 'environment'.log file. **Information log** and **Error log** are written in 'environment'.log and 'environment'_errors.log files respectively which resides in the path `var/log/`
 
 
