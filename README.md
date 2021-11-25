@@ -1,10 +1,10 @@
 # Export data to Google Sheet
 
-### About:
+### About
 
 This is a command-line application, based on the [Symfony CLI component](https://symfony.com/doc/current/components/console.html). The application process a local or remote(ftp) XML file and push the data of that XML file to a Google Spreadsheet via the [Google Sheets API](https://developers.google.com/sheets/).
 
-### Technology Used:
+### Technology Used
 
 * PHP 8.0.12
 * Symfony CLI version 4.26.8
@@ -64,6 +64,6 @@ php bin/console app:export-data --source=ftp coffee_feed.xml
 
 ### Logs
 
-* Logs for the application are stored in the 'environment'.log file. **Information log** and **Error log** has been placed seperately in files 'environment'.log and 'environment'_errors.log respectively inside the path `var/log/`
+* Logs for the application are stored in the 'environment'.log file. **Information log** and **Error log** will be logged in 'environment'.log and 'environment'_errors.log files respectively which resides in the path `var/log/`
 
 
