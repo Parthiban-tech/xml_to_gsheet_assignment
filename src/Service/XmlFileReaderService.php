@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 
@@ -15,14 +17,16 @@ use XMLReader;
 
 class XmlFileReaderService implements FileReaderInterface
 {
+    protected IFTPAdapter $iFTPAdapter;
     private string $resourceDir;
     private string $ftpServer;
     private string $ftpUser;
     private string $ftpPassword;
     const SIMPLE_XML_ELEMENT = 'SimpleXMLElement';
 
-    public function __construct(protected IFTPAdapter $iFTPAdapter, string $resourceDir, string $ftpHost, string $ftpUser, string $ftpPassword)
+    public function __construct(IFTPAdapter $iFTPAdapter, string $resourceDir, string $ftpHost, string $ftpUser, string $ftpPassword)
     {
+        $this->iFTPAdapter = $iFTPAdapter;
         $this->resourceDir = $resourceDir;
         $this->ftpServer = $ftpHost;
         $this->ftpUser = $ftpUser;

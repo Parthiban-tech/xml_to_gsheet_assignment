@@ -1,8 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Application\Command;
 
 use App\Command\DataExporterException;
-use APP\Constant\AppConstants;
+use App\Application\Constant\AppConstants;
 use App\Interfaces\DataExporterInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;

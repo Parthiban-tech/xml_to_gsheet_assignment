@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Component\GoogleAPI;
 
 use App\Component\GoogleAPI\Exception\InvalidSpreadSheetIdException;
@@ -66,8 +68,7 @@ class GoogleSpreadSheetAPI implements SpreadSheetInterface
                 $params = [
                     'valueInputOption' => 'RAW'
                 ];
-                //dd($this->googleSheet->spreadsheets_values);
-                $resp = $this->googleSheet->spreadsheets_values->update($sheetId, $range, $body, $params);
+                $this->googleSheet->spreadsheets_values->update($sheetId, $range, $body, $params);
 
             }
         } catch (Exception $e) {

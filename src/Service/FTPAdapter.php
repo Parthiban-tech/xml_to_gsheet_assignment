@@ -1,9 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Service;
 
 use App\Interfaces\IFTPAdapter;
-use Google\Service\Resource;
 
 class FTPAdapter implements IFTPAdapter
 {

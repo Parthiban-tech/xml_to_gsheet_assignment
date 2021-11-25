@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Interfaces\FileReaderInterface;
 use App\Interfaces\SpreadSheetInterface;
 use App\Service\XmlDataTransformer;

@@ -23,10 +23,6 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
-    App\Service\XmlExporterService:
-        arguments:
-
-
     App\Service\XmlFileReaderService:
         arguments:
             $resourceDir: '%kernel.project_dir%/resource/'

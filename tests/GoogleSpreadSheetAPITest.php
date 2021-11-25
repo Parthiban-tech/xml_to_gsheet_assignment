@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Component\GoogleAPI\GoogleSpreadSheetAPI;
 use Google\Service\Sheets\UpdateValuesResponse;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -14,33 +16,33 @@ class GoogleSpreadSheetAPITest extends TestCase
     /**
      * @var Google_Service_Drive|Google_Service_Sheets|mixed|MockObject
      */
-    private mixed $googleSheetServiceMock;
+    private $googleSheetServiceMock;
     /**
      * @var Google_Service_Drive|mixed|MockObject
      */
-    private mixed $googleSheetDriveMock;
+    private $googleSheetDriveMock;
 
     /**
      * @var Google_Client|mixed|MockObject
      */
-    private mixed $googleClientMock;
+    private $googleClientMock;
     /**
      * @var mixed|MockObject|LoggerInterface
      */
-    private mixed $loggerMock;
+    private $loggerMock;
     /**
      * @var Google_Service_Sheets_Resource_Spreadsheets|mixed|MockObject
      */
-    private mixed $sheetResourceMock;
+    private $sheetResourceMock;
 
     /**
      * @var Google_Service_Drive_Resource_Permissions|mixed|MockObject
      */
-    private mixed $drivePermissionResourceMock;
+    private $drivePermissionResourceMock;
     /**
      * @var Google_Service_Sheets_Resource_SpreadsheetsValues|mixed|MockObject
      */
-    private mixed $spreadsheetsValuesResourceMock;
+    private $spreadsheetsValuesResourceMock;
 
     protected function setUp(): void
     {
