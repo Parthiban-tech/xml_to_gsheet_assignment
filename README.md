@@ -41,7 +41,7 @@ docker-compose up -d
  
 ### Run export command
 
-* For local export run this command inside the php container
+* For local export, place the xml file under `resource` directory and run the following command inside the php container
 
 ```
 php bin/console app:export-data --source=local employee.xml
