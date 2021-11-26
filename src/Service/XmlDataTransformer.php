@@ -6,7 +6,6 @@ namespace App\Service;
 
 class XmlDataTransformer
 {
-
     public function transform($values): array
     {
         $header = array_keys($values[0]);

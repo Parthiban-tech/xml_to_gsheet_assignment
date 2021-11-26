@@ -11,7 +11,6 @@ use App\Interfaces\SpreadSheetInterface;
 class XmlExporterService implements DataExporterInterface
 {
 
-    const SUCCESS = true;
     private FileReaderInterface $fileReader;
     private SpreadSheetInterface $spreadSheet;
     private XmlDataTransformer $xmlDataTransformer;
@@ -28,8 +27,8 @@ class XmlExporterService implements DataExporterInterface
 
     public function export(string $fileSourceType, string $fileName): bool
     {
-        $xmlData = $this->fileReader->read($fileSourceType, $fileName);
-        $exportData = $this->xmlDataTransformer->transform($xmlData);
+        $xmlDataInArray = $this->fileReader->read($fileSourceType, $fileName);
+        $exportData = $this->xmlDataTransformer->transform($xmlDataInArray);
         $this->spreadSheet->exportToSpreadsheet($exportData);
         return true;
     }

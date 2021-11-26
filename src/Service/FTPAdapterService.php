@@ -2,9 +2,9 @@
 
 namespace App\Service;
 
-use App\Interfaces\IFTPAdapter;
+use App\Interfaces\FTPAdapterInterface;
 
-class FTPAdapter implements IFTPAdapter
+class FTPAdapterService implements FTPAdapterInterface
 {
 
     public function connect(string $ftpServer)

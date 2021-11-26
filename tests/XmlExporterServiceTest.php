@@ -12,10 +12,8 @@ class XmlExporterServiceTest extends TestCase
 {
 
     /** @test */
-    public function testExportDataFromLocalDir(){
+    public function it_passes_data_from_one_service_to_another(){
 
-        $sourceType = 'local';
-        $fileName = 'employee_test.xml';
         $fileReaderInterfaceMock = $this->createMock(FileReaderInterface::class);
         $processSpreadSheetInterface = $this->createMock(SpreadSheetInterface::class);
         $xmlDataTransformer = $this->createMock(XmlDataTransformer::class);
@@ -25,7 +23,7 @@ class XmlExporterServiceTest extends TestCase
             $processSpreadSheetInterface,
             $xmlDataTransformer);
 
-        $exportData = $xmlExporterService->export($sourceType, $fileName);
+        $exportData = $xmlExporterService->export('source', 'file');
         $this->assertTrue($exportData);
     }
 

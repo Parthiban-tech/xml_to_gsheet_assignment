@@ -16,33 +16,33 @@ class GoogleSpreadSheetAPITest extends TestCase
     /**
      * @var Google_Service_Drive|Google_Service_Sheets|mixed|MockObject
      */
-    private $googleSheetServiceMock;
+    private mixed $googleSheetServiceMock;
     /**
      * @var Google_Service_Drive|mixed|MockObject
      */
-    private $googleSheetDriveMock;
+    private mixed $googleSheetDriveMock;
 
     /**
      * @var Google_Client|mixed|MockObject
      */
-    private $googleClientMock;
+    private mixed $googleClientMock;
     /**
      * @var mixed|MockObject|LoggerInterface
      */
-    private $loggerMock;
+    private mixed $loggerMock;
     /**
      * @var Google_Service_Sheets_Resource_Spreadsheets|mixed|MockObject
      */
-    private $sheetResourceMock;
+    private mixed $sheetResourceMock;
 
     /**
      * @var Google_Service_Drive_Resource_Permissions|mixed|MockObject
      */
-    private $drivePermissionResourceMock;
+    private mixed $drivePermissionResourceMock;
     /**
      * @var Google_Service_Sheets_Resource_SpreadsheetsValues|mixed|MockObject
      */
-    private $spreadsheetsValuesResourceMock;
+    private mixed $spreadsheetsValuesResourceMock;
 
     protected function setUp(): void
     {
@@ -67,7 +67,7 @@ class GoogleSpreadSheetAPITest extends TestCase
     }
 
     /** @test */
-    public function exportToSpreadSheetTest(){
+    public function it_exports_to_spreadsheet_process_with_dummy_data(){
 
         $resultSheetObj = new Google_Service_Sheets_Spreadsheet();
         $spreadsheetId = uniqid();

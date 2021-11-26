@@ -3,15 +3,17 @@
 declare(strict_types=1);
 
 use App\Application\Constant\AppConstants;
-use App\Interfaces\IFTPAdapter;
+use App\Interfaces\FTPAdapterInterface;
 use App\Service\Exception\FileNotExistException;
+use App\Service\Exception\FTPGetFileToLocalException;
+use App\Service\Exception\FTPLoginFailedException;
 use App\Service\Exception\FTPServerConnectionRefusedException;
 use App\Service\XmlFileReaderService;
 use PHPUnit\Framework\TestCase;
 
 class XmlFileReaderServiceTest extends TestCase
 {
-    private IFTPAdapter $ftpAdapterMock;
+    private FTPAdapterInterface $ftpAdapterMock;
 
     private string $sourceType;
     private string $fileName;
@@ -21,12 +23,9 @@ class XmlFileReaderServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->ftpAdapterMock = $this->createMock(IFTPAdapter::class);
+        $this->ftpAdapterMock = $this->createMock(FTPAdapterInterface::class);
 
         $this->resourceDir = __DIR__ . '/data/';
-        $ftpHost = 'validServer';
-        $ftpUser = 'user';
-        $ftpPassword = 'pass';
 
         $this->sourceType = AppConstants::OPTION_SOURCE_LOCAL;
         $this->fileName = 'employee_test.xml';
@@ -34,9 +33,7 @@ class XmlFileReaderServiceTest extends TestCase
         $this->xmlReaderService = new XmlFileReaderService(
             $this->ftpAdapterMock,
             $this->resourceDir,
-            $ftpHost,
-            $ftpUser,
-            $ftpPassword
+            $this->getFtpDetails()
         );
 
     }
@@ -89,8 +86,34 @@ class XmlFileReaderServiceTest extends TestCase
     }
 
     /** @test */
+    public function ftp_login_failure_exception(){
+        $this->expectException(FTPLoginFailedException::class);
+
+        $this->ftpAdapterMock->method('connect')->willReturn(true);
+        $this->ftpAdapterMock->method('login')->willReturn(false);
+        $this->xmlReaderService->read(
+            AppConstants::OPTION_SOURCE_FTP,
+            $this->fileName
+        );
+    }
+
+    /** @test */
+    public function ftp_failed_to_get_data_exception(){
+        $this->expectException(FTPGetFileToLocalException::class);
+
+        $this->ftpAdapterMock->method('connect')->willReturn(true);
+        $this->ftpAdapterMock->method('login')->willReturn(true);
+        $this->ftpAdapterMock->method('getFile')->willReturn(false);
+
+        $this->xmlReaderService->read(
+            AppConstants::OPTION_SOURCE_FTP,
+            $this->fileName
+        );
+    }
+
+    /** @test */
     public function invalid_xml_content_parsing_error(){
-        $this->expectError(ParseError::class);
+        $this->expectError();
 
         $errorFilename = 'employee_error.xml';
         $this->xmlReaderService->read(
@@ -103,5 +126,9 @@ class XmlFileReaderServiceTest extends TestCase
     private function getXmlData(): SimpleXMLElement|bool {
         $fileContent = file_get_contents($this->resourceDir . $this->fileName);
         return simplexml_load_string($fileContent, null, LIBXML_NOCDATA);
+    }
+
+    private function getFtpDetails(): array{
+        return ['server' => 'validServer', 'user' => 'user', 'password' => 'pass'];
     }
 }

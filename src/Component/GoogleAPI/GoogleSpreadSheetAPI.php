@@ -16,7 +16,6 @@ use Google_Service_Sheets_Spreadsheet;
 use Google_Service_Sheets_ValueRange;
 use Psr\Log\LoggerInterface;
 
-
 class GoogleSpreadSheetAPI implements SpreadSheetInterface
 {
     private LoggerInterface $logger;
@@ -59,7 +58,7 @@ class GoogleSpreadSheetAPI implements SpreadSheetInterface
     {
         try{
             if(empty($sheetId)){
-                throw new InvalidSpreadSheetIdException("Spreadsheet with id " . $sheetId . "is not available");
+                throw new InvalidSpreadSheetIdException("Spreadsheet id is empty.");
             } else {
                 $body = new Google_Service_Sheets_ValueRange([
                     'values'=>$data
@@ -68,11 +67,10 @@ class GoogleSpreadSheetAPI implements SpreadSheetInterface
                     'valueInputOption' => 'RAW'
                 ];
                 $this->googleSheet->spreadsheets_values->update($sheetId, $range, $body, $params);
-
             }
         } catch (Exception $e) {
-            $this->logger->error("Failed to write google sheet, sheet id : " . $sheetId);
-            $this->logger->error("Error Message: ". $e->getMessage());
+            $this->logger->error("Failed to write google sheet, sheet id : " . $sheetId,
+                ["Error Message: ". $e->getMessage()]);
             exit;
         }
     }
@@ -84,8 +82,8 @@ class GoogleSpreadSheetAPI implements SpreadSheetInterface
             $values = $response->getValues();
 
         } catch (Exception $e) {
-            $this->logger->error("Failed to read google sheet, sheet id : " . $sheetId);
-            $this->logger->error("Error Message: ". $e->getMessage());
+            $this->logger->error("Failed to read google sheet, sheet id : " . $sheetId,
+                ["Error Message: ". $e->getMessage()]);
             exit;
         }
         return $values;

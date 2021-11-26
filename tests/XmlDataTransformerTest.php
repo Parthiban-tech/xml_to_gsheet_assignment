@@ -12,7 +12,7 @@ class XmlDataTransformerTest extends TestCase
     private string $fileName;
 
     /** @test */
-    public function it_transforms_xml_object_to_array(){
+    public function it_prepares_export_data_from_xml_array(){
 
         $dataProvider = new DataProvider();
         $inputData = $dataProvider->inputDataToTransformer();

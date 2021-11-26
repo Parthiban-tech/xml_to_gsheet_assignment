@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Exception;
 
-class FileContentException extends FileReaderException
+class InvalidParameterException extends \RuntimeException
 {
 
 }

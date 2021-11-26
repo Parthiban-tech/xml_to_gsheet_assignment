@@ -26,9 +26,10 @@ services:
     App\Service\XmlFileReaderService:
         arguments:
             $resourceDir: '%kernel.project_dir%/resource/'
-            $ftpHost: '%env(FTP_HOST)%'
-            $ftpUser: '%env(FTP_USER)%'
-            $ftpPassword: '%env(FTP_PASSWORD)%'
+            $ftp:
+                server: '%env(FTP_HOST)%'
+                user: '%env(FTP_USER)%'
+                password: '%env(FTP_PASSWORD)%'
 
     GoogleClient:
         class: Google_Client

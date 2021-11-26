@@ -4,33 +4,40 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-
 use App\Application\Constant\AppConstants;
 use App\Interfaces\FileReaderInterface;
-use App\Interfaces\IFTPAdapter;
+use App\Interfaces\FTPAdapterInterface;
 use App\Service\Exception\FileNotExistException;
 use App\Service\Exception\FTPGetFileToLocalException;
 use App\Service\Exception\FTPLoginFailedException;
 use App\Service\Exception\FTPServerConnectionRefusedException;
-use App\Service\Exception\InvalidSourceTypeException;
+use App\Service\Exception\InvalidParameterException;
 use XMLReader;
 
 class XmlFileReaderService implements FileReaderInterface
 {
-    protected IFTPAdapter $iFTPAdapter;
+    private const SIMPLE_XML_ELEMENT = 'SimpleXMLElement';
+    private const FTP_SERVER = 'server';
+    private const FTP_USER = 'user';
+    private const FTP_PASSWORD = 'password';
+
+    protected FTPAdapterInterface $iFTPAdapter;
     private string $resourceDir;
     private string $ftpServer;
     private string $ftpUser;
     private string $ftpPassword;
-    const SIMPLE_XML_ELEMENT = 'SimpleXMLElement';
 
-    public function __construct(IFTPAdapter $iFTPAdapter, string $resourceDir, string $ftpHost, string $ftpUser, string $ftpPassword)
+    public function __construct(
+        FTPAdapterInterface $iFTPAdapter,
+        string              $resourceDir,
+        array               $ftp
+    )
     {
         $this->iFTPAdapter = $iFTPAdapter;
         $this->resourceDir = $resourceDir;
-        $this->ftpServer = $ftpHost;
-        $this->ftpUser = $ftpUser;
-        $this->ftpPassword = $ftpPassword;
+        $this->ftpServer = $ftp[self::FTP_SERVER];
+        $this->ftpUser = $ftp[self::FTP_USER];
+        $this->ftpPassword = $ftp[self::FTP_PASSWORD];
     }
 
     public function read(string $sourceType, string $xmlFileName): array
@@ -38,7 +45,7 @@ class XmlFileReaderService implements FileReaderInterface
         return match ($sourceType) {
             AppConstants::OPTION_SOURCE_LOCAL => $this->readXmlFromResourceDir($xmlFileName),
             AppConstants::OPTION_SOURCE_FTP => $this->readXmlFromFTP($xmlFileName),
-            default => throw new InvalidSourceTypeException("Invalid source type: " . $sourceType)
+            default => throw new InvalidParameterException("Invalid source type: " . $sourceType)
         };
     }
 
@@ -62,20 +69,20 @@ class XmlFileReaderService implements FileReaderInterface
         // skip root node
         while ($xmlReader->read() && $xmlReader->name != $nodeName);
 
-        $dataAsArray = array();
+        $xmlDataAsArray = array();
         while($xmlReader->name == $nodeName) {
             if ($xmlReader->nodeType == XMLReader::ELEMENT) {
-
                 $arrStr  = ((array) simplexml_load_string($xmlReader->readOuterXML(),
                     self::SIMPLE_XML_ELEMENT, LIBXML_NOCDATA));
-                // Convert SimpleXMLElement object to String
-                array_walk_recursive($arrStr,function(&$item){$item=strval($item);});
-                $dataAsArray[] = $arrStr;
+
+                // Parsing SimpleXMLElement object to String
+                array_walk_recursive($arrStr, function(&$item){$item=strval($item);});
+                $xmlDataAsArray[] = $arrStr;
                 $xmlReader->next($nodeName);
             }
         }
         $xmlReader->close();
-        return $dataAsArray;
+        return $xmlDataAsArray;
     }
 
     private function readXmlFromFTP($xmlFileName): array

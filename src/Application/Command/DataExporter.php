@@ -18,7 +18,6 @@ class DataExporter extends Command
     protected static $defaultName = 'app:export-data';
 
     private const OPTION_SOURCE = 'source';
-
     private const ARGUMENT_FILE = 'file';
 
     private LoggerInterface $logger;
@@ -41,7 +40,7 @@ class DataExporter extends Command
                 self::OPTION_SOURCE,
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Valid options: local, remote',
+                'Valid options: local, ftp',
                 AppConstants::OPTION_SOURCE_LOCAL
             )
             -> addArgument(
@@ -53,7 +52,7 @@ class DataExporter extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-       $this->logger->info("Exporting data to spread sheet.");
+        $this->logger->info("Initiated the service to export data to spread sheet.");
 
         try {
             $fileSource = $input->getOption(self::OPTION_SOURCE);
