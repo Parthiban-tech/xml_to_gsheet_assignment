@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Interfaces\FileReaderInterface;
+use App\Component\FileReader\FileReaderFactory;
 use App\Interfaces\SpreadSheetInterface;
 use App\Service\XmlDataTransformer;
 use App\Service\XmlExporterService;
@@ -12,18 +12,18 @@ class XmlExporterServiceTest extends TestCase
 {
 
     /** @test */
-    public function it_passes_data_from_one_service_to_another(){
+    public function it_passes_input_to_other_services(){
 
-        $fileReaderInterfaceMock = $this->createMock(FileReaderInterface::class);
-        $processSpreadSheetInterface = $this->createMock(SpreadSheetInterface::class);
-        $xmlDataTransformer = $this->createMock(XmlDataTransformer::class);
+        $fileReaderFactoryMock = $this->createMock(FileReaderFactory::class);
+        $processSpreadSheetInterfaceMock = $this->createMock(SpreadSheetInterface::class);
+        $xmlDataTransformerMock = $this->createMock(XmlDataTransformer::class);
 
         $xmlExporterService = new XmlExporterService(
-            $fileReaderInterfaceMock,
-            $processSpreadSheetInterface,
-            $xmlDataTransformer);
+            $fileReaderFactoryMock,
+            $processSpreadSheetInterfaceMock,
+            $xmlDataTransformerMock);
 
-        $exportData = $xmlExporterService->export('source', 'file');
+        $exportData = $xmlExporterService->export('local', 'file');
         $this->assertTrue($exportData);
     }
 

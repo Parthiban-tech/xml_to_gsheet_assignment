@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Exception;
+namespace App\Component\FileReader\Exception;
 
 class FTPServerConnectionRefusedException extends FTPException
 {

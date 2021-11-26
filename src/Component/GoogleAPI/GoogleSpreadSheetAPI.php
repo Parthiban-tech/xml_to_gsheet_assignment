@@ -50,6 +50,7 @@ class GoogleSpreadSheetAPI implements SpreadSheetInterface
             $this->logger->error("Failed to create google sheet : " . $e->getMessage());
             exit;
         }
+
         $this->logger->info("Google Sheet has been created, Id: " . $sheetId);
         return $sheetId;
     }

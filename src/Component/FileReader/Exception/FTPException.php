@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service\Exception;
+namespace App\Component\FileReader\Exception;
 
 use RuntimeException;
 

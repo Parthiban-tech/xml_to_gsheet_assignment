@@ -23,13 +23,28 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
-    App\Service\XmlFileReaderService:
+    FileReaderLocal:
+        class: App\Component\FileReader\FileReaderLocal
         arguments:
+            $resourceDir: '%kernel.project_dir%/resource/'
+
+    FileReaderFtp:
+        class: App\Component\FileReader\FileReaderFtp
+        arguments:
+            $fileReaderLocal: '@FileReaderLocal'
             $resourceDir: '%kernel.project_dir%/resource/'
             $ftp:
                 server: '%env(FTP_HOST)%'
                 user: '%env(FTP_USER)%'
                 password: '%env(FTP_PASSWORD)%'
+
+    App\Component\FileReader\FileReaderFactory:
+        class: App\Component\FileReader\FileReaderFactory
+        public: true
+        arguments:
+            $fileReaderConfig:
+                local: '@FileReaderLocal'
+                ftp: '@FileReaderFtp'
 
     GoogleClient:
         class: Google_Client
