@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use App\Component\FileReader\Exception\FTPGetFileToLocalException;
-use App\Component\FileReader\Exception\FTPLoginFailedException;
-use App\Component\FileReader\Exception\FTPServerConnectionRefusedException;
-use App\Component\FileReader\FileReaderFtp;
-use App\Component\FileReader\FileReaderLocal;
+use App\Utility\FileDownloader\Exception\FTPGetFileToLocalException;
+use App\Utility\FileDownloader\Exception\FTPLoginFailedException;
+use App\Utility\FileDownloader\Exception\FTPServerConnectionRefusedException;
+use App\Utility\FileReader\FileReaderFtp;
+use App\Utility\FileReader\FileReaderLocal;
 use App\Interfaces\FTPAdapterInterface;
 use PHPUnit\Framework\TestCase;
 use SimpleXMLElement;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Component\FileReader\Exception;
+namespace App\Utility\FileReader\Exception;
 
 class FileReaderException extends \RuntimeException
 {

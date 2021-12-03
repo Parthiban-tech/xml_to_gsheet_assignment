@@ -8,7 +8,7 @@ use App\Component\GoogleAPI\Exception\InvalidSpreadSheetIdException;
 use App\Component\GoogleAPI\Exception\PermissionsErrorException;
 use App\Interfaces\SpreadSheetInterface;
 use Exception;
-use Google_Client;
+//use Google_Client;
 use Google_Service_Drive;
 use Google_Service_Drive_Permission;
 use Google_Service_Sheets;
@@ -19,24 +19,24 @@ use Psr\Log\LoggerInterface;
 class GoogleSpreadSheetAPI implements SpreadSheetInterface
 {
     private LoggerInterface $logger;
-    private Google_Client $googleClient;
+    //private Google_Client $googleClient;
     private Google_Service_Sheets $googleSheet;
     private Google_Service_Drive $googleDrive;
-    private string $sheetName;
+    private string $sheetName = 'Sheet1';
 
     public function __construct(
         LoggerInterface $logger,
-        Google_Client $googleClient,
+        //Google_Client $googleClient,
         Google_Service_Sheets $googleSheet,
-        Google_Service_Drive $googleDrive,
-        string $sheetName)
+        Google_Service_Drive $googleDrive)
+        //string $sheetName)
     {
-        $googleClient->setScopes([Google_Service_Sheets::SPREADSHEETS, Google_Service_Drive::DRIVE]);
+        // $googleClient->setScopes([Google_Service_Sheets::SPREADSHEETS, Google_Service_Drive::DRIVE]);
         $this->logger = $logger;
-        $this->googleClient = $googleClient;
+        //$this->googleClient = $googleClient;
         $this->googleDrive = $googleDrive;
         $this->googleSheet = $googleSheet;
-        $this->sheetName = $sheetName;
+        //$this->sheetName = $sheetName;
     }
 
     public function create(): string

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Component\FileReader\FileReaderFactory;
+use App\Utility\FileReader\FileReaderFactory;
 use App\Interfaces\SpreadSheetInterface;
 use App\Service\XmlDataTransformer;
 use App\Service\XmlExporterService;

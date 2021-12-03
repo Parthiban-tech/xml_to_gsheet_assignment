@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use App\Component\FileReader\Exception\FileNotExistException;
-use App\Component\FileReader\FileReaderLocal;
+use App\Utility\FileReader\Exception\FileNotExistException;
+use App\Utility\FileReader\FileReaderLocal;
 use PHPUnit\Framework\TestCase;
 use SimpleXMLElement;
 

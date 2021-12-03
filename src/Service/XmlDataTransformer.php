@@ -4,15 +4,25 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use JetBrains\PhpStorm\Pure;
+
 class XmlDataTransformer
 {
-    public function transform($values): array
+    #[Pure] public function transform($values): array
     {
-        $header = array_keys($values[0]);
-        $row_data = array_map(function($n) {
-            return array_values($n);
-        }, $values);
-        array_unshift($row_data, $header);
-        return $row_data;
+        $exportData = [];
+        foreach ($values as $key => $value){
+            // Column header
+            if(0 === $key)
+                $exportData[] = $this->getKeysAsColHeader($value);
+            // Row Data
+            $exportData[] = array_values($value);
+        }
+        return $exportData;
+    }
+
+    private function getKeysAsColHeader($colData): array
+    {
+        return array_keys($colData);
     }
 }

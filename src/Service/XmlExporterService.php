@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Component\FileReader\FileReaderFactory;
+use App\Utility\FileReader\FileReaderFactory;
 use App\Interfaces\DataExporterInterface;
 use App\Interfaces\SpreadSheetInterface;
 
@@ -28,8 +28,8 @@ class XmlExporterService implements DataExporterInterface
     public function export(string $fileSourceType, string $fileName): bool
     {
         $fileReader = $this->fileReaderFactory->getReader($fileSourceType);
-        $xmlDataInArray = $fileReader->read($fileName);
-        $exportData = $this->xmlDataTransformer->transform($xmlDataInArray);
+        $generatorDataInAssArray = $fileReader->read($fileName);
+        $exportData = $this->xmlDataTransformer->transform($generatorDataInAssArray);
         $this->spreadSheet->exportToSpreadsheet($exportData);
         return true;
     }

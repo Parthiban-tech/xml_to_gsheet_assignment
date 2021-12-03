@@ -1,0 +1,21 @@
+services:
+    g.client:
+        class: Google_Client
+        autowire: true
+        calls:
+            - [ setApplicationName, [ 'DataExporter XML to google sheet' ] ]
+            - [ setScopes, [ [ 'https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive' ] ] ]
+            - [ setAccessType, [ 'offline' ] ]
+            - [ setAuthConfig, [ '%kernel.project_dir%%env(GC_AUTH_CONFIG)%' ] ]
+
+    Google_Client: '@g.client'
+
+    Google_Service_Sheets:
+        class: Google_Service_Sheets
+        arguments:
+            - '@g.client'
+
+    Google_Service_Drive:
+        class: Google_Service_Drive
+        arguments:
+            - '@g.client'

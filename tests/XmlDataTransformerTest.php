@@ -8,8 +8,6 @@ use App\Tests\data\DataProvider;
 
 class XmlDataTransformerTest extends TestCase
 {
-    private string $resourceDir;
-    private string $fileName;
 
     /** @test */
     public function it_prepares_export_data_from_xml_array(){

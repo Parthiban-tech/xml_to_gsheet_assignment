@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Component\FileReader;
+namespace App\Utility\FileReader;
 
-use App\Component\FileReader\Exception\FileNotExistException;
+use App\Utility\FileReader\Exception\FileNotExistException;
 use App\Interfaces\FileReaderInterface;
 use XMLReader;
+use Generator;
 
 class FileReaderLocal implements FileReaderInterface
 {
@@ -18,7 +19,7 @@ class FileReaderLocal implements FileReaderInterface
         $this->resourceDir = $resourceDir;
     }
 
-    public function read(string $xmlFileName): array
+    public function read(string $xmlFileName): Generator
     {
         $xmlAbsPath  = $this->resourceDir . $xmlFileName;
 
@@ -38,7 +39,7 @@ class FileReaderLocal implements FileReaderInterface
         // skip root node
         while ($xmlReader->read() && $xmlReader->name != $nodeName);
 
-        $xmlDataAsArray = array();
+        //$xmlDataAsArray = array();
         while($xmlReader->name == $nodeName) {
             if ($xmlReader->nodeType == XMLReader::ELEMENT) {
                 $arrStr  = ((array) simplexml_load_string($xmlReader->readOuterXML(),
@@ -46,11 +47,12 @@ class FileReaderLocal implements FileReaderInterface
 
                 // Parsing SimpleXMLElement object to String
                 array_walk_recursive($arrStr, function(&$item){$item=strval($item);});
-                $xmlDataAsArray[] = $arrStr;
+                //$xmlDataAsArray[] = $arrStr;
+                yield $arrStr;
                 $xmlReader->next($nodeName);
             }
         }
         $xmlReader->close();
-        return $xmlDataAsArray;
+        //return $xmlDataAsArray;
     }
 }
