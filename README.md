@@ -31,13 +31,6 @@ FTP_USER=
 FTP_PASSWORD=
 ```
 
-* Build docker container
-
-```
-docker-compose build
-docker-compose up -d
-```
-  
  
 ### Run export command
 
