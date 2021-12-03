@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Tests;
+
 use App\Utility\FileReader\FileReaderFactory;
 use App\Interfaces\SpreadSheetInterface;
 use App\Service\XmlDataTransformer;

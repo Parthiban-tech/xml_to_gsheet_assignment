@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+namespace App\Tests;
 
-class FileReaderFactoryTest extends KernelTestCase
+use PHPUnit\Framework\TestCase;
+
+class FileReaderFactoryTest extends TestCase
 {
 
     /** @test */

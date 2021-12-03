@@ -2,14 +2,22 @@
 
 declare(strict_types=1);
 
+namespace App\Tests;
+
 use App\Component\GoogleAPI\GoogleSpreadSheetAPI;
 use Google\Service\Sheets\UpdateValuesResponse;
+use Google_Service_Drive;
+use Google_Service_Drive_Permission;
+use Google_Service_Drive_Resource_Permissions;
+use Google_Service_Sheets;
+use Google_Service_Sheets_Resource_Spreadsheets;
+use Google_Service_Sheets_Resource_SpreadsheetsValues;
+use Google_Service_Sheets_Spreadsheet;
+use Google_Service_Sheets_ValueRange;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use App\Tests\data\DataProvider;
-
-
 
 class GoogleSpreadSheetAPITest extends TestCase
 {
@@ -22,10 +30,6 @@ class GoogleSpreadSheetAPITest extends TestCase
      */
     private mixed $googleSheetDriveMock;
 
-    /**
-     * @var Google_Client|mixed|MockObject
-     */
-    private mixed $googleClientMock;
     /**
      * @var mixed|MockObject|LoggerInterface
      */
@@ -51,7 +55,6 @@ class GoogleSpreadSheetAPITest extends TestCase
         $this->googleSheetServiceMock = $this->createMock(Google_Service_Sheets::class);
         $this->googleSheetDriveMock = $this->createMock(Google_Service_Drive::class);
         $this->loggerMock = $this->createMock(LoggerInterface::class);
-        $this->googleClientMock = $this->createMock(Google_Client::class);
 
         $this->drivePermissionResourceMock = $this->createMock(Google_Service_Drive_Resource_Permissions::class);
         $this->googleSheetDriveMock->permissions = $this->drivePermissionResourceMock;
@@ -100,10 +103,8 @@ class GoogleSpreadSheetAPITest extends TestCase
 
         $googleSpreadSheetAPI = new GoogleSpreadSheetAPI(
             $this->loggerMock,
-            $this->googleClientMock,
             $this->googleSheetServiceMock,
-            $this->googleSheetDriveMock,
-            'Sheet1'
+            $this->googleSheetDriveMock
         );
         $resultSheetId = $googleSpreadSheetAPI->exportToSpreadsheet($dataProvider->inputDataToExport());
         $this->assertEquals($spreadsheetId, $resultSheetId);

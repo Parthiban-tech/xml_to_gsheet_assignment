@@ -32,27 +32,25 @@ class FileReaderLocal implements FileReaderInterface
 
         $xmlReader->read();
         $node = $xmlReader->expand();
-
         // Identify parent node name which has text contents
         $nodeName = $node->firstChild->nextSibling->nodeName;
-
         // skip root node
         while ($xmlReader->read() && $xmlReader->name != $nodeName);
 
-        //$xmlDataAsArray = array();
+
         while($xmlReader->name == $nodeName) {
+
             if ($xmlReader->nodeType == XMLReader::ELEMENT) {
                 $arrStr  = ((array) simplexml_load_string($xmlReader->readOuterXML(),
                     self::SIMPLE_XML_ELEMENT, LIBXML_NOCDATA));
 
                 // Parsing SimpleXMLElement object to String
                 array_walk_recursive($arrStr, function(&$item){$item=strval($item);});
-                //$xmlDataAsArray[] = $arrStr;
+
                 yield $arrStr;
                 $xmlReader->next($nodeName);
             }
         }
         $xmlReader->close();
-        //return $xmlDataAsArray;
     }
 }

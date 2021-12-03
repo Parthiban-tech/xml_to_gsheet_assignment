@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Tests;
+
 use App\Service\XmlDataTransformer;
 use PHPUnit\Framework\TestCase;
 use App\Tests\data\DataProvider;

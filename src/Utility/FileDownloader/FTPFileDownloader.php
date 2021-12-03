@@ -7,10 +7,10 @@ namespace App\Utility\FileDownloader;
 use App\Utility\FileDownloader\Exception\FTPGetFileToLocalException;
 use App\Utility\FileDownloader\Exception\FTPLoginFailedException;
 use App\Utility\FileDownloader\Exception\FTPServerConnectionRefusedException;
-use App\Interfaces\FileDownloader;
+use App\Interfaces\FileDownloaderInterface;
 use App\Interfaces\FTPAdapterInterface;
 
-class FTPFileDownloader implements FileDownloader
+class FTPFileDownloader implements FileDownloaderInterface
 {
 
     private const FTP_SERVER = 'server';
@@ -36,7 +36,7 @@ class FTPFileDownloader implements FileDownloader
         $this->ftpPassword = $ftp[self::FTP_PASSWORD];
     }
 
-    public function download(string $fileName)
+    public function download(string $fileName): bool
     {
         $connection = $this->iFTPAdapter->connect($this->ftpServer);
         if(false === $connection){
@@ -53,5 +53,7 @@ class FTPFileDownloader implements FileDownloader
         }
 
         $this->iFTPAdapter->closeConnection($connection);
+
+        return true;
     }
 }

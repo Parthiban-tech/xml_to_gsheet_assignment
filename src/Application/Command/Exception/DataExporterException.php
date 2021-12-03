@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Command\Exception;
+namespace App\Application\Command\Exception;
 
-class DataExporterException extends \RuntimeException
+use RuntimeException;
+
+class DataExporterException extends RuntimeException
 {
 
 }

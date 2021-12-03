@@ -7,7 +7,6 @@ namespace App\Tests;
 use App\Utility\FileReader\Exception\FileNotExistException;
 use App\Utility\FileReader\FileReaderLocal;
 use PHPUnit\Framework\TestCase;
-use SimpleXMLElement;
 
 class FileReaderLocalTest extends TestCase
 {
@@ -31,8 +30,12 @@ class FileReaderLocalTest extends TestCase
     /** @test */
     public function it_read_file_from_local_dir()
     {
-        $arrayData = $this->fileReaderLocal->read($this->fileName);
-        $this->assertSame(count($arrayData), count($this->getXmlData()));
+        $generatorValues = $this->fileReaderLocal->read($this->fileName);
+        $this->assertSame($this->getXmlDataByIndex(0), $generatorValues->current());
+        $generatorValues->next();
+        $this->assertSame($this->getXmlDataByIndex(1), $generatorValues->current());
+        $generatorValues->next();
+        $this->assertSame($this->getXmlDataByIndex(2), $generatorValues->current());
     }
 
     /** @test */
@@ -40,7 +43,7 @@ class FileReaderLocalTest extends TestCase
         $this->expectError();
 
         $errorFilename = 'employee_error.xml';
-        $this->fileReaderLocal->read($errorFilename);
+        $this->fileReaderLocal->read($errorFilename)->current();
     }
 
     /** @test */
@@ -48,11 +51,12 @@ class FileReaderLocalTest extends TestCase
         $this->expectException(FileNotExistException::class);
 
         $invalidFileName = 'employee.xml';
-        $this->fileReaderLocal->read($invalidFileName);
+        $this->fileReaderLocal->read($invalidFileName)->current();
     }
 
-    private function getXmlData(): SimpleXMLElement|bool {
+    private function getXmlDataByIndex(int $index): array {
         $fileContent = file_get_contents($this->resourceDir . $this->fileName);
-        return simplexml_load_string($fileContent, null, LIBXML_NOCDATA);
+        $arrayData = (array) simplexml_load_string($fileContent, null, LIBXML_NOCDATA);
+        return (array) array_values($arrayData)[0][$index];
     }
 }

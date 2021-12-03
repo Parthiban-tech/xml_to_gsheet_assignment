@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Utility\FileDownloader\Exception;;
+namespace App\Utility\FileDownloader\Exception;
 
 use RuntimeException;
 
