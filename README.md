@@ -31,7 +31,22 @@ FTP_USER=
 FTP_PASSWORD=
 ```
 
- 
+### Docker Build
+
+* "dockerfile" file is added to the project. Running the following command create an environment and bundle the project inside the docker container with name "data-exporter".
+
+```
+docker build -t php-symfony . && docker run --name data-exporter php-symfony
+```
+
+* Run command `docker ps` in new terminal window to see the container details.
+* Open the bash to execute the project with the following command.
+
+```
+docker exec -it data-exportecr bash
+```
+* Inside the bash terminal we can run our project.
+
 ### Run export command
 
 * For local export, place the xml file under `resource` directory and run the following command inside the php container
@@ -49,7 +64,7 @@ php bin/console app:export-data --source=ftp coffee_feed.xml
 
 ### Run tests
 
-* Run the following commad inside the container to check the test case result.
+* Run the following command inside the container to check the test case result.
 
 ```
 ./vendor/bin/phpunit tests/
