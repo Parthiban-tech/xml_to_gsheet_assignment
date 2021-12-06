@@ -33,7 +33,7 @@ FTP_PASSWORD=
 
 ### Docker Build
 
-* "dockerfile" file is added to the project. Running the following command create an environment and bundle the project inside the docker container with name "data-exporter".
+* "dockerfile" file is added to the project. Running the following command creates an environment and bundle the project inside the docker container with container name "data-exporter".
 
 ```
 docker build -t php-symfony . && docker run --name data-exporter php-symfony
