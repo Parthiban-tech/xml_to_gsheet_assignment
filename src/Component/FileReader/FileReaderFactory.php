@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Utility\FileReader;
+namespace App\Component\FileReader;
 
-use App\Utility\FileReader\Exception\InvalidParameterException;
+use App\Component\FileReader\Exception\InvalidParameterException;
 use App\Interfaces\FileReaderInterface;
 
 class FileReaderFactory

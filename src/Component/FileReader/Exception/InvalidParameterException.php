@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Utility\FileReader\Exception;
+namespace App\Component\FileReader\Exception;
 
 use RuntimeException;
 

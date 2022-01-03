@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Interfaces\DataTransformer;
-use App\Utility\FileReader\FileReaderFactory;
+use App\Component\FileReader\FileReaderFactory;
 use App\Interfaces\DataTransporterInterface;
 use App\Interfaces\SpreadSheetInterface;
 use Psr\Log\LoggerInterface;

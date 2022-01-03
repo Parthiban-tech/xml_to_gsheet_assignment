@@ -8,6 +8,7 @@ use App\Component\GoogleAPI\Exception\InvalidSpreadSheetIdException;
 use App\Component\GoogleAPI\Exception\PermissionsErrorException;
 use App\Interfaces\SpreadSheetInterface;
 use Exception;
+use Google\Service\Sheets\AppendValuesResponse;
 use Google_Service_Drive;
 use Google_Service_Drive_Permission;
 use Google_Service_Sheets;
@@ -73,26 +74,28 @@ class GoogleSpreadSheetAPI implements SpreadSheetInterface
         foreach ($records as $record){
             $batchOfItems[] = $record;
             if(self::BATCH_LIMIT === count($batchOfItems)) {
-                $this->appendData($sheetId, $batchOfItems);
+                $result = $this->appendData($sheetId, $batchOfItems);
                 $batchOfItems = [];
-
+                $recordsCount += $result->getUpdates()->getUpdatedRows();
             }
         }
 
         if(!empty($batchOfItems)){
-            $this->appendData($sheetId, $batchOfItems);
+            $result = $this->appendData($sheetId, $batchOfItems);
+            $recordsCount += $result->getUpdates()->getUpdatedRows();
         }
+        echo $recordsCount . " rows has been updated in sheet => " . $sheetId;
     }
 
-    private function appendData(string $sheetId, array $records){
+    private function appendData(string $sheetId, array $records): AppendValuesResponse{
         $body = new Google_Service_Sheets_ValueRange([
             'values' => $records
         ]);
         $params = [
             'valueInputOption' => "USER_ENTERED"
         ];
-        $this->googleSheet->spreadsheets_values->append($sheetId, $this->sheetName, $body, $params);
-        dd($this->googleSheet->spreadsheets_values);
+        return $this->googleSheet->spreadsheets_values->append($sheetId, $this->sheetName, $body, $params);
+        // dd($this->googleSheet->spreadsheets_values);
         // https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
     }
 
