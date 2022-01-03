@@ -22,6 +22,7 @@ class FTPFileDownloaderTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->ftpAdapterMock = $this->createMock(FTPAdapterInterface::class);
 
         $resourceDir = __DIR__ . '/data/';

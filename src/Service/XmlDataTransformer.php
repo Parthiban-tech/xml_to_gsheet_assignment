@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use JetBrains\PhpStorm\Pure;
+use App\Interfaces\DataTransformer;
+use Generator;
 
-class XmlDataTransformer
+class XmlDataTransformer implements DataTransformer
 {
-    #[Pure] public function transform($values): array
+
+    public function transform(Generator $records): Generator
     {
-        $exportData = [];
-        foreach ($values as $key => $value){
-            // Column header
-            if(0 === $key)
-                $exportData[] = $this->getKeysAsColHeader($value);
-            // Row Data
-            $exportData[] = array_values($value);
+        yield $this->getKeysAsColHeader($records->current());
+
+        foreach ($records as $key => $record) {
+            yield array_values($record);
         }
-        return $exportData;
     }
 
     private function getKeysAsColHeader($colData): array

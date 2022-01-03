@@ -59,6 +59,9 @@
     "phpdocumentor/type-resolver": {
         "version": "1.5.1"
     },
+    "phpmetrics/phpmetrics": {
+        "version": "v2.7.4"
+    },
     "phpseclib/phpseclib": {
         "version": "3.0.11"
     },

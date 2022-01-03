@@ -7,7 +7,7 @@ namespace App\Tests;
 use App\Utility\FileReader\FileReaderFactory;
 use App\Interfaces\SpreadSheetInterface;
 use App\Service\XmlDataTransformer;
-use App\Service\XmlExporterService;
+use App\Service\XmlTransporterService;
 use PHPUnit\Framework\TestCase;
 
 class XmlExporterServiceTest extends TestCase
@@ -20,7 +20,7 @@ class XmlExporterServiceTest extends TestCase
         $processSpreadSheetInterfaceMock = $this->createMock(SpreadSheetInterface::class);
         $xmlDataTransformerMock = $this->createMock(XmlDataTransformer::class);
 
-        $xmlExporterService = new XmlExporterService(
+        $xmlExporterService = new XmlTransporterService(
             $fileReaderFactoryMock,
             $processSpreadSheetInterfaceMock,
             $xmlDataTransformerMock);

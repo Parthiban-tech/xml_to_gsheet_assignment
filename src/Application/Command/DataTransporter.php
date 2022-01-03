@@ -5,27 +5,27 @@ declare(strict_types=1);
 namespace App\Application\Command;
 
 
-use App\Application\Command\Exception\DataExporterException;
+use App\Application\Command\Exception\DataTransporterException;
 use App\Application\Constant\AppConstants;
-use App\Interfaces\DataExporterInterface;
+use App\Interfaces\DataTransporterInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DataExporter extends Command
+class DataTransporter extends Command
 {
-    protected static $defaultName = 'app:export-data';
+    protected static $defaultName = 'app:data-transporter';
 
     private const OPTION_SOURCE = 'source';
     private const ARGUMENT_FILE = 'file';
 
     private LoggerInterface $logger;
-    private DataExporterInterface $dataExporter;
+    private DataTransporterInterface $dataExporter;
 
-    public function __construct(DataExporterInterface $dataExporter,
-                                LoggerInterface $logger)
+    public function __construct(DataTransporterInterface $dataExporter,
+                                LoggerInterface          $logger)
     {
         parent::__construct();
         $this->dataExporter = $dataExporter;
@@ -35,8 +35,7 @@ class DataExporter extends Command
     public function configure()
     {
         $this
-            -> setName('export:data:spreadsheet')
-            -> setDescription('Export data to a spreadsheet')
+            -> setDescription('Read, transform and export data')
             -> addOption(
                 self::OPTION_SOURCE,
                 null,
@@ -56,17 +55,17 @@ class DataExporter extends Command
         $this->logger->info("Initiated the service to export data to spread sheet.");
 
         try {
-            $fileSource = $input->getOption(self::OPTION_SOURCE);
-            $fileName = $input->getArgument(self::ARGUMENT_FILE);
+            $from= $input->getOption(self::OPTION_SOURCE);
+            $file = $input->getArgument(self::ARGUMENT_FILE);
 
-            $this->dataExporter->export($fileSource, $fileName);
-        } catch(DataExporterException $e){
+            $this->dataExporter->transport($file, $from);
+
+        } catch(DataTransporterException $e){
             $this->logger->error($e->getMessage(), [ 'exception' => $e ]);
             return self::FAILURE;
         }
 
         $this->logger->info("Data exported to spread sheet successfully!");
         return self::SUCCESS;
-
     }
 }

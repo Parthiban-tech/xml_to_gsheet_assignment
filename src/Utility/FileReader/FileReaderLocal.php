@@ -31,24 +31,24 @@ class FileReaderLocal implements FileReaderInterface
         $xmlReader->open($xmlAbsPath);
 
         $xmlReader->read();
-        $node = $xmlReader->expand();
+        $xmlContent = $xmlReader->expand();
+
         // Identify parent node name which has text contents
-        $nodeName = $node->firstChild->nextSibling->nodeName;
-        // skip root node
-        while ($xmlReader->read() && $xmlReader->name != $nodeName);
+        $parentNode = $xmlContent->firstChild->nextSibling->nodeName;
+        // skip root node & traverse to reach parent node.
+        while ($xmlReader->read() && $xmlReader->name != $parentNode);
 
 
-        while($xmlReader->name == $nodeName) {
-
+        while($xmlReader->name == $parentNode) {
             if ($xmlReader->nodeType == XMLReader::ELEMENT) {
-                $arrStr  = ((array) simplexml_load_string($xmlReader->readOuterXML(),
+                $xmlDataInArray  = ((array) simplexml_load_string($xmlReader->readOuterXML(),
                     self::SIMPLE_XML_ELEMENT, LIBXML_NOCDATA));
 
                 // Parsing SimpleXMLElement object to String
-                array_walk_recursive($arrStr, function(&$item){$item=strval($item);});
+                array_walk_recursive($xmlDataInArray, function(&$item){$item=strval($item);});
 
-                yield $arrStr;
-                $xmlReader->next($nodeName);
+                yield $xmlDataInArray;
+                $xmlReader->next($parentNode);
             }
         }
         $xmlReader->close();
