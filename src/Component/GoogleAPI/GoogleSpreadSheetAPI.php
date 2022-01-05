@@ -22,9 +22,11 @@ class GoogleSpreadSheetAPI implements SpreadSheetInterface
     private LoggerInterface $logger;
     private Google_Service_Sheets $googleSheet;
     private Google_Service_Drive $googleDrive;
-    private string $sheetName = 'Sheet1';
 
+    private const ERROR_CODE_MAX_LIMIT_REACHED = 429;
+    private const WAIT_TIME_IN_SECONDS = 10;
     private const BATCH_LIMIT = 100;
+    private const SHEET_NAME = 'Sheet1';
 
 
     public function __construct(
@@ -76,7 +78,8 @@ class GoogleSpreadSheetAPI implements SpreadSheetInterface
             if(self::BATCH_LIMIT === count($batchOfItems)) {
                 $result = $this->appendData($sheetId, $batchOfItems);
                 $batchOfItems = [];
-                $recordsCount += $result->getUpdates()->getUpdatedRows();
+                if(isset($result))
+                    $recordsCount += $result->getUpdates()->getUpdatedRows();
             }
         }
 
@@ -87,16 +90,28 @@ class GoogleSpreadSheetAPI implements SpreadSheetInterface
         echo $recordsCount . " rows has been updated in sheet => " . $sheetId;
     }
 
-    private function appendData(string $sheetId, array $records): AppendValuesResponse{
-        $body = new Google_Service_Sheets_ValueRange([
-            'values' => $records
-        ]);
-        $params = [
-            'valueInputOption' => "USER_ENTERED"
-        ];
-        return $this->googleSheet->spreadsheets_values->append($sheetId, $this->sheetName, $body, $params);
-        // dd($this->googleSheet->spreadsheets_values);
-        // https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+    private function appendData(string $sheetId, array $records): ?AppendValuesResponse
+    {
+        $result = null;
+        try {
+            $body = new Google_Service_Sheets_ValueRange([
+                'values' => $records
+            ]);
+            $params = [
+                'valueInputOption' => "USER_ENTERED"
+            ];
+
+            $result =  $this->googleSheet->spreadsheets_values->append($sheetId, self::SHEET_NAME, $body, $params);
+        } catch (Exception $ex){
+            $this->logger->error("Error code: " . $ex->getCode() . " Error Message: " . $ex->getMessage());
+
+            if($ex->getCode() === self::ERROR_CODE_MAX_LIMIT_REACHED){
+                // when limit reached, wait for few seconds and resume writing.
+                sleep(self::WAIT_TIME_IN_SECONDS);
+                $result = $this->appendData($sheetId, $records);
+            }
+        }
+        return $result;
     }
 
     private function setSheetPermissions(string $sheetId): void
